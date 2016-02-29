@@ -1,0 +1,2 @@
+# solody-dbinstall
+dbinstall
