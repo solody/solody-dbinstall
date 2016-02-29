@@ -8,5 +8,10 @@
   "repositories" : [ {
     "type" : "composer",
     "url" : "https://packagist.org/"
-  } ]
+  } ],
+  "autoload": {
+    "psr-4": {
+        "Solody\\Dbinstall\\": "src/"
+    }
+  }
 }
