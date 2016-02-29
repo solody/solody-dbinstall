@@ -195,143 +195,99 @@ class Dbinstall extends Metadata
     }
     
     /**
+     * Create Recent columns quickly.
+     * @param unknown $type
+     * @param unknown $name
+     * @return \Zend\Db\Sql\Ddl\Column\Integer|\Zend\Db\Sql\Ddl\Column\Varchar|\Zend\Db\Sql\Ddl\Column\Text|\Zend\Db\Sql\Ddl\Column\Datetime
+     */
+    private function createColumn($type,$name = null)
+    {
+        $column = null;
+        if (empty($name)){
+            if ($type=='acid') $name = 'id';
+            $name = $type;
+        }
+        
+        switch ($type) {
+            
+            case 'acid':
+                $column = new Column\Integer($name,FALSE,NULL,array('autoincrement'=>true));
+            break;
+            
+            case 'name':
+                $column = new Column\Varchar($name, 50);
+            break;
+            
+            case 'type':
+                $column = new Column\Varchar($name, 50);
+            break;
+            
+            case 'text':
+                $column = new Column\Text($name);
+            break;
+            
+            case 'time':
+                $column = new Column\Datetime($name);
+            break;
+            
+            case 'image':
+                $column = new Column\Varchar($name, 255);
+            break;
+            
+            case 'page_title':
+                $column = new Column\Varchar($name, 255);
+            break;
+            
+            case 'page_keywords':
+                $column = new Column\Varchar($name, 500);
+            break;
+            
+            case 'page_description':
+                $column = new Column\Varchar($name, 1000);
+            break;
+            
+            case 'rlid':
+                $column = new Column\Integer($name,TRUE,NULL);
+            break;
+            
+            default:
+                throw new \Exception('unknow column type.');
+            break;
+        }
+        
+        
+        return $column;
+    }
+    
+    /**
+     * Create Recent constraint quickly.
+     * @param unknown $type
+     * @param unknown $columnName
+     * @throws \Exception
+     */
+    private function createConstraint($type,$columnName)
+    {
+        switch ($type) {
+        
+            case 'pk':
+                $column = new Constraint\PrimaryKey($columnName);
+                break;
+        
+            default:
+                throw new \Exception('unknow constraint type.');
+                break;
+        }
+    }
+    
+    /**
      * Compose the tables structure data, and create them by $this->create_table();
      */
-    private function create_tables() {
-        
-        // Common columns
-        $COLUMNS['id']              = new Column\Integer('id',FALSE,NULL,array('autoincrement'=>true));
-        
-        $COLUMNS['name']            = new Column\Varchar('name', 50);
-        $COLUMNS['type']            = new Column\Varchar('type', 50);
-        
-        $COLUMNS['title']            = new Column\Varchar('title', 255);
-        $COLUMNS['keywords']         = new Column\Varchar('keywords', 500);
-        $COLUMNS['description']      = new Column\Varchar('description', 1000);
-        $COLUMNS['text']            = new Column\Text('text');
-        $COLUMNS['source_id']     = new Column\Integer('source_id',TRUE,NULL);
-        
-        $COLUMNS['category_id']     = new Column\Integer('category_id',FALSE,NULL);
-        $COLUMNS['create_time']     = new Column\Datetime('create_time');
-        
-        $COLUMNS['image']           = new Column\Varchar('image', 255);
-        
-        $COLUMNS['photo_id']     = new Column\Integer('photo_id',FALSE,NULL);
-        $COLUMNS['album_id']     = new Column\Integer('album_id',FALSE,NULL);
-        $COLUMNS['thumb_id']     = new Column\Integer('thumb_id',TRUE,NULL);
-
-        
-        // Common constraints
-        $CONSTRAINTS['id_primarykey'] = new Constraint\PrimaryKey('id');
-        
-        
-        /**
-         * Create table [article].
-         */
-        $table_article['column'] = array(
-            $COLUMNS['id'],
-            $COLUMNS['title'],
-            $COLUMNS['keywords'],
-            $COLUMNS['description'],
-            $COLUMNS['thumb_id'],
-            $COLUMNS['text'],
-            $COLUMNS['source_id'],
-            $COLUMNS['category_id'],
-            $COLUMNS['create_time'],
-        );
-        $table_article['constraint'] = array(
-            $CONSTRAINTS['id_primarykey']
-        );
-        $this->create_table( 'article', $table_article);
-
-        
-        /**
-         * Create table [album].
-         */
-        $table_album['column'] = array(
-            $COLUMNS['id'],
-            $COLUMNS['title'],
-            $COLUMNS['keywords'],
-            $COLUMNS['description'],
-            $COLUMNS['thumb_id'],
-            $COLUMNS['text'],
-            $COLUMNS['source_id'],
-            $COLUMNS['category_id'],
-            $COLUMNS['create_time'],
-        );
-        $table_album['constraint'] = array(
-            $CONSTRAINTS['id_primarykey']
-        );
-        $this->create_table( 'album', $table_album);
-        
-        
-        /**
-         * Create table [album_photo].
-         */
-        $table_album_photo['column'] = array(
-            $COLUMNS['album_id'],
-            $COLUMNS['photo_id'],
-        );
-        $this->create_table( 'album_photo', $table_album_photo);
-
-        
-        /**
-         * Create table [photo].
-         */
-        $table_photo['column'] = array(
-            $COLUMNS['id'],
-            $COLUMNS['image'],
-            $COLUMNS['text'],
-            $COLUMNS['source_id'],
-            $COLUMNS['create_time'],
-        );
-        $table_photo['constraint'] = array(
-            $CONSTRAINTS['id_primarykey']
-        );
-        $this->create_table( 'photo', $table_photo);
-        
-        
-        
-        /**
-         * Create table [thumb].
-         */
-        $table_thumb['column'] = array(
-            $COLUMNS['id'],
-            $COLUMNS['image'],
-            $COLUMNS['text'],
-            $COLUMNS['source_id'],
-            $COLUMNS['create_time'],
-        );
-        $table_thumb['constraint'] = array(
-            $CONSTRAINTS['id_primarykey']
-        );
-        $this->create_table( 'thumb', $table_thumb);
-        
-        
-        /**
-         * Create table [category].
-         */
-        $table_category['column'] = array(
-            $COLUMNS['id'],
-            $COLUMNS['type'],
-            $COLUMNS['name'],
-            $COLUMNS['source_id'],
-            new Column\Integer('parent_id',FALSE,NULL),
-        );
-        $table_category['constraint'] = array(
-            $CONSTRAINTS['id_primarykey']
-        );
-        $this->create_table( 'category', $table_category);
-        
-    }
+    abstract protected function create_tables();
     
     /**
      * Insert the base data rows.
      */
-    private function insert_rows() {
-        
-        
-    }
+    abstract protected function insert_rows();
     
 
 }
