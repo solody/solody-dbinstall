@@ -12,7 +12,7 @@ use Zend\Db\Sql\Ddl\Column;
 use Zend\Db\Sql\Ddl\Constraint;
 
 
-class Dbinstall extends Metadata
+abstract class Dbinstall extends Metadata
 {
     public $config = NULL;
     
