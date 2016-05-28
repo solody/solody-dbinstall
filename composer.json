@@ -3,12 +3,13 @@
   "version" : "0.0.1",
   "require" : {
     "zendframework/zend-db" : ">=2.5.0",
-    "zendframework/zend-config" : ">=2.5.0"
+    "zendframework/zend-config" : ">=2.5.0",
+    "phpunit/phpunit" : "5.3.4"
   },
   "repositories" : [ {
     "type" : "composer",
     "url" : "https://packagist.org/"
-  }],
+  } ],
   "autoload" : {
     "psr-4" : {
       "Solody\\Dbinstall\\" : "src/"

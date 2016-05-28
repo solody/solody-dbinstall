@@ -3,6 +3,7 @@
  * The class for maintain database structure.
  */
 namespace Solody\Dbinstall;
+
 use Zend\Db\Metadata\Metadata;
 use Zend\Db\Adapter\Adapter;
 use Zend\Config\Config;
@@ -80,7 +81,7 @@ abstract class Dbinstall extends Metadata
         $config = array();
         if (file_exists($config_file)) $config = include 'config/autoload/local.php';
             
-        $reader = new \Zend\Config\Config($config);
+        $reader = new Config($config);
         $reader->merge($local_db_config);
         
         $writer = new \Zend\Config\Writer\PhpArray();
