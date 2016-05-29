@@ -1,2 +1,4 @@
 # solody-dbinstall
-dbinstall
+Dbinstall 是用于协助web项目进行数据库安装的一系列工具，目前只有一个类，那就是Dbinstall类。
+Dbinstall类接受一个数据库配置数组进行实例化，addCreateTable方法用来定义要创建的表，addInsert用来定义要插入的数据。具体的用法请参考单元测试用例。
+Dbinstall类依赖Zend/Db和Zend/Config
