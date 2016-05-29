@@ -1,6 +1,6 @@
 {
   "name" : "solody/solody-dbinstall",
-  "version" : "0.0.1",
+  "version" : "0.0.2",
   "require" : {
     "zendframework/zend-db" : ">=2.5.0",
     "zendframework/zend-config" : ">=2.5.0",
