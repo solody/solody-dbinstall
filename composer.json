@@ -4,7 +4,8 @@
   "require" : {
     "zendframework/zend-db" : ">=2.5.0",
     "zendframework/zend-config" : ">=2.5.0",
-    "phpunit/phpunit" : "5.3.4"
+    "phpunit/phpunit" : "5.3.4",
+    "zendframework/zend-loader" : ">=2.5.0"
   },
   "repositories" : [ {
     "type" : "composer",
